@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>A chart</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <link rel="stylesheet" href="/public/css/styles.css"
+  </head>
+  <body>
+    <div class="container">
+      <div class="col-sm-12">
+        <div class="row question-container">
+          <h5>Poll by: <span id="pollCreator">username</span></h5>
+          <h3 id="pollQuestion">question</h3>
+        </div>
+        <div class="row chart-container">
+          <div class="well well-lg">
+            <canvas id="myChart"></canvas>
+          </div>
+        </div>
+        <div class="row response-container">
+          <table class="table table-striped">
+            <th>
+              <td>Response</td>
+              <td>Votes</td>
+            </th>
+          </table>
+        </div>
+      </div>
+    </div>
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script src="/public/js/palette.js"></script>
+    <script src="/public/js/chart2.js"></script>
+    <script src="/public/js/Chart.js"></script>
+    <script src="/controllers/pollHandler.client.js"></script>
+    
+  </body>
+</html>
