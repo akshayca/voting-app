@@ -1,26 +1,46 @@
 'use strict';
-var mongoose = require('mongoose');
-var path = process.cwd();
 var pollHandler = require('../controllers/pollHandler.server.js');
 
 module.exports = function (app, db) {
   var PollHandler = new pollHandler();
-  
+
   app.route('/')
     .get(function (req, res) {
       res.sendFile(process.cwd() + '/public/index.html');
     });
-  
+
+  app.route('/polls')
+    .get(function (req, res) {
+      res.sendFile(process.cwd() + '/public/index.html');
+  });
+
+  app.route('/polls/new')
+    .get(function(req, res) {
+      res.sendFile(process.cwd() + '/public/poll_new.html');
+  });
+
   app.route('/polls/:id')
     .get(function(req, res) {
-      res.sendFile(process.cwd() + '/public/poll.html');
+      res.sendFile(process.cwd() + '/public/poll_unvoted.html');
     });
-      
+
   app.route('/api/polls')
     .get(PollHandler.getList)
     .post(PollHandler.addPoll);
 
-  app.route('/api/polls/:id')  
-    .get(PollHandler.showPoll);
-  
+  app.route('/api/polls/:id')
+    .get(PollHandler.showPoll)
+    .post(PollHandler.addOptions);
+
+  app.route('/api/polls/:id/options')
+    .get(PollHandler.showOptions);
+
+  app.route('/api/polls/:pollId/options/:optionId')
+    .get(PollHandler.vote);
+
+  app.route('/api/votes')
+    .get(PollHandler.getVotes);
+
+  app.route('/api/votes/:id')
+    .get(PollHandler.countVotes);
 };

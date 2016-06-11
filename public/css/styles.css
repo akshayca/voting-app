@@ -2,3 +2,30 @@
 	margin-top: 20px;
 	margin-bottom: 30px;
 }
+
+.list-group a:hover {
+  background-color: #6ed3cf;
+  color: #fff;
+}
+
+nav li:hover {
+  background-color: #9068be;
+  color: #fff;
+}
+
+.navbar-default .navbar-brand {
+  color: #9068be;
+}
+
+.question {
+  margin-bottom: 30px;
+  margin-top: 0px;
+  color: #e62739;
+}
+
+.question-intro {
+  font-style: italic;
+  color: #e1e8f0;
+  margin-bottom: 0;
+  margin-left: -30px;
+}

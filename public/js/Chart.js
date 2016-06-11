@@ -13,26 +13,38 @@ function transformData(data, callback, callback2){
   var keys = [];
   var values = [];
   var responses = data["responses"];
-  console.log("responses: " + responses);
-  responses.forEach(function(response) {
+  function compare(a,b) {
+    if  {
+      return -1;
+    } else if (a.votes > b.votes) {
+      return 1;
+    } else { 
+      return 0;
+    }
+  }
+
+  sortedResponses = responses.sort(compare);
+
+  console.log("sorted responses: " + sortedResponses);
+  sortedResponses.forEach(function(response) {
     keys.push(response.response);
     values.push(response.votes);
   });
   
   //limit them to 10 entries + 'all other' summary
-    if (keys.length > 10) {
-      var legendKeys = keys.splice(0,10);
-      legendKeys.push('All other responses');
+  if (keys.length > 10) {
+    var legendKeys = keys.splice(0,10);
+    legendKeys.push('All other responses');
+  
+    var legendValues = values.splice(0,10);
+    var sumLowEnd = values.reduce(function(sum, cv) {
+      return sum + cv;
+    })
+    legendValues.push(sumLowEnd);
     
-      var legendValues = values.splice(0,10);
-      var sumLowEnd = values.reduce(function(sum, cv) {
-        return sum + cv;
-      })
-      legendValues.push(sumLowEnd);
-      
-      keys = legendKeys;
-      values = legendValues;
-    }
+    keys = legendKeys;
+    values = legendValues;
+  }
 
   
    //callback
@@ -73,7 +85,7 @@ function readyDataStructures(keys, values, callback) {
 
 function buildChart(data, options) {
 
-  var ctx = document.getElementById("myChart").getContext("2d");
+  var ctx = document.getElementById("pollChart").getContext("2d");
 
   return new Chart(ctx, {
     type: 'doughnut',
