@@ -11,7 +11,7 @@ module.exports = function (app, db) {
 
   app.route('/polls')
     .get(function (req, res) {
-      res.sendFile(process.cwd() + '/public/index.html');
+      res.sendFile(process.cwd() + '/public/search.html');
   });
 
   app.route('/polls/new')
@@ -21,7 +21,7 @@ module.exports = function (app, db) {
 
   app.route('/polls/:id')
     .get(function(req, res) {
-      res.sendFile(process.cwd() + '/public/poll_unvoted.html');
+      res.sendFile(process.cwd() + '/public/poll.html');
     });
 
   app.route('/api/polls')
@@ -38,9 +38,15 @@ module.exports = function (app, db) {
   app.route('/api/polls/:pollId/options/:optionId')
     .get(PollHandler.vote);
 
+  app.route('/api/search')
+    .get(PollHandler.getFilteredList);
+
   app.route('/api/votes')
     .get(PollHandler.getVotes);
 
   app.route('/api/votes/:id')
     .get(PollHandler.countVotes);
+
+  app.route('/api/allvotes/:id')
+    .get(PollHandler.totalPollVotes);
 };

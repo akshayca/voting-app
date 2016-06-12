@@ -4,25 +4,23 @@
 }
 
 .list-group a:hover {
-  background-color: #6ed3cf;
-  color: #fff;
-}
-
-nav li:hover {
-  background-color: #9068be;
+  background-color: #66c2a5;
   color: #fff;
 }
 
 .navbar-default .navbar-brand {
-  color: #9068be;
+  color: #5e4fa2;
 }
 
 .question {
   margin-bottom: 30px;
   margin-top: 0px;
-  color: #e62739;
+  color: #9e0142;
 }
 
+h1 {
+  color: #9e0142;
+}
 .question-intro {
   font-style: italic;
   color: #e1e8f0;

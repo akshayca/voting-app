@@ -5,7 +5,9 @@ $(document).ready(function() {
 
   $('#addResponse').click(function(e) {
     e.preventDefault();
-    $('#responses').append(' <div class="form-group" id="option-group"><label>Option</label><input type="text" class="form-control response-option" placeholder="A possible response..."></div>');
+    var numOptions = $('.option-group').length + 1;
+    $('#responses').append('<div class="form-group option-group" id="option' + numOptions + '"><label>Option ' + numOptions + '</label><input type="text" class="form-control response-option" placeholder="A possible response..."></div>');
+    $('#option' + numOptions + '>input').focus();
   })
 
   $('#submit').click(function(e) {
@@ -23,7 +25,7 @@ $(document).ready(function() {
       var id = data._id;
       var url = '/api/polls/' + id;
       $.post(url, optionData, function(data2) {
-        console.log(data2);
+        window.location.href = '/polls/' + id;
       });
     });
 

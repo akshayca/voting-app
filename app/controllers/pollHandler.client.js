@@ -19,7 +19,8 @@ $(document).ready(function() {
     $.get('/api/polls/' + id, populatePage);
 
     function populatePage(pollData) {
-      console.log(pollData.question);
+      $('#chartContainer').css("display", 'none');
+      $('#response-intro').text("Select your response:")
       $('#question').text(pollData.question);
       $.get('/api/polls/' + id + '/options', function(optionsData) {
         console.log(optionsData);
@@ -34,36 +35,91 @@ $(document).ready(function() {
     $.get('/api/polls/' + id, populatePage);
 
     function populatePage(pollData) {
-      console.log(pollData.question);
+      $('#chartContainer').css("display", 'block');
+      $('#response-intro').text("Votes per response")
       $('#question').text(pollData.question);
+      $('#options').removeClass('list-group').append('<ul class="list-group"></ul>');
+      var pollResults = [];
+      var length;
       $.get('/api/polls/' + id + '/options', function(optionsData) {
-        console.log(optionsData);
+        length = optionsData.length;
         optionsData.forEach(function(option) {
           $.get('/api/votes/' + option._id, function(data) {
-            $('#options').append('<a class="list-group-item" href="/api/polls/' + pollData._id + '/options/' + option._id + '"><span class="badge">' + data.count + '</span>' + option.text + '</a>');
+            var currOption = [option.text, data.count];
+            pollResults.push(currOption);
+            $('ul.list-group').append('<li class="list-group-item"><span class="badge">' + data.count + '</span>' + option.text + '</a>');
+            if(pollResults.length === length) {
+              console.log(pollResults);
+              displayChart(pollResults);
+            }
           });
         })
       });
     }
   }
 
-  /*
-  function populateVotedPage(pollData)
-    var responses = pollData.responses
-    var tableContents = '<tr><th>Response</th><th>Votes</th></tr>';
-    responses.forEach(function(response) {
-      tableContents += '<tr><td>' + response.response + '</td><td>' + response.votes + '</td></tr>';
-    });
-    $('#pollResponses').html(tableContents);
+  function displayChart(pollResults) {
+    console.log("poll results: ", pollResults);
+    var colors = palette('cb-Spectral', 11);
+    var labels = [];
+    var values = [];
 
-    var responses = pollData.responses;
+    console.log(pollResults);
 
-    $('#pollButton').click(function(e){
-      e.preventDefault();
-      var text = $(e.target).text();
-      resp
+    function compare(a,b) {
+      if (a[1] < b[1])  {
+        return 1;
+      } else if (a[1] > b[1]) {
+        return -1;
+      } else {
+        return 0;
+      }
+    }
+
+    var sortedResponses = pollResults.sort(compare);
+    sortedResponses.forEach(function(response) {
+      labels.push(response[0]);
+      values.push(response[1]);
     })
-  }
-*/
 
+    if (labels.length > 10) {
+      var legendLabels = labels.splice(0,10);
+      legendLabels.push('All other responses');
+
+      var legendValues = values.splice(0,10);
+      var sumLowEnd = values.reduce(function(sum, cv) {
+        return sum + cv;
+      })
+      legendValues.push(sumLowEnd);
+
+      labels = legendLabels;
+      values = legendValues;
+    }
+
+    var data = {
+      labels: labels,
+      datasets: [
+        {
+          data: values,
+          backgroundColor: colors,
+          hoverBackgroundColor: colors
+        }
+      ]
+    };
+
+    var options = {
+      cutoutPercentage: 70
+    };
+
+    var ctx = document.getElementById("pollChart").getContext("2d");
+
+    var chart = new Chart(ctx, {
+      type: 'doughnut',
+      data: data,
+      options: options
+    });
+
+
+    console.log(colors);
+  }
 });

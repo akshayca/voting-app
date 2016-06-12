@@ -31,9 +31,9 @@
         </ul>
         <form class="navbar-form navbar-left" role="search">
           <div class="form-group">
-            <input type="text" class="form-control" placeholder="Search polls">
+            <input type="text" class="form-control" placeholder="Search polls" id="searchTerms">
           </div>
-          <button type="submit" class="btn btn-default">Submit</button>
+          <button type="submit" class="btn btn-default" id="searchSubmit">Go</button>
         </form>
         <ul class="nav navbar-nav navbar-right">
           <li><a href="#">Login</a></li>
@@ -47,17 +47,17 @@
         <h2>Add a New Poll</h2>
         <form id="newPoll">
           <div class="form-group" id="question-group">
-            <label for="question">Question</label>
+            <label for="question"><h4>Question</h4></label>
             <input type="text" class="form-control" id="question" placeholder="What would you like to ask?">
           </div>
           <div id="responses">
             <h4>Responses</h4>
-            <div class="form-group" id="option-group">
-              <label>Option</label>
+            <div class="form-group option-group">
+              <label>Option 1</label>
               <input type="text" class="form-control response-option" placeholder="A possible response...">
             </div>
           </div>
-          <div>
+          <div >
             <button class="btn btn-default" id="addResponse"><i class="glyphicon glyphicon-plus"></i> Another Option</button>
             <button class="btn btn-primary" id="submit">Submit Poll</button>
           </div>
@@ -68,6 +68,8 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
     <script src="/controllers/newPollHandler.client.js"></script>
+    <script src="/controllers/searchHandler.client.js"></script>
+
 
   </body>
 </html>
