@@ -1,0 +1,18 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+  <div class="container">
+    <div class="col-sm-10 col-sm-offset-1">
+      <h1>Voting-app</h1>
+      <p>Welcome! Please Login.</p>
+      <hr><br>
+      <a href="/auth/github" class="btn btn-default">Github</a>
+      <a href="/auth/twitter" class="btn btn-default">Twitter</a>
+    </div>
+  </div>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+  <script src="/controllers/listHandler.client.js"></script>
+  <script src="/controllers/searchHandler.client.js"></script>
+{% endblock %}
