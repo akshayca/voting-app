@@ -6,12 +6,15 @@ My name is [Luke Walker](http://lukewalker.org), and I'm currently teaching myse
 
 It's my first full-stack Javascript site. I built it with Node/Express/MongoDB (using Clementine.js as boilerplate), with Passport.js for authentication, Swig for templates, Bootstrap to keep things looking decent, and Chart.js for beautiful charts, and [this palette generator from Google](https://github.com/google/palette.js/tree/master) for the color scheme.
 
+You can play with my voting app on heroku here: https://ubershibs-voting-app.herokuapp.com
+
 I'd love any feedback you have! Send along an email to luke dot walker at gmail dot com.
 
 ## To-do:
 - Move view logic entirely to Swig templates — I had the site half built before I discovered the engine, so I'm not yet taking full advantage of its functionality.
 - Add more authentication options/local.
 - Make things prettier.
+- Maybe change voting to be one vote per poll per user/IP address (for guests), rather than one vote per poll per session? I've left it like this to facilitate testing for now.
 
 --------
 
