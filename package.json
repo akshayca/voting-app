@@ -17,5 +17,9 @@
     "passport-github2": "^0.1.10",
     "passport-twitter": "^1.0.4",
     "swig": "^1.4.2"
+  },
+  "engines": {
+    "node": "4.4.3",
+    "npm": "2.15.1"
   }
 }
