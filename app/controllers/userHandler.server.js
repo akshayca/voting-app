@@ -28,7 +28,7 @@ function userHandler(db) {
     .exec(function(err, result){
       if (err) {throw err};
       if (result) {
-        Poll.find({ creator: result }).select('_id question')
+        Poll.find({ creator: result, deletedAt: { "$exists": false } }).select('_id question')
         .exec(function(err, result){
           if (err) {throw err};
           var profileUserPolls = result;

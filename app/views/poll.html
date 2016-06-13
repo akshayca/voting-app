@@ -5,7 +5,9 @@
   <div class="container">
     <div class="col-sm-10 col-sm-offset-1">
       <h3 class="question-intro">Question:</h3>
+      <div class="addthis_sharing_toolbox pull-right" id="addthis"></div>
       <h1 class="question" id="question"></h1>
+      <h5 class="creator"></h5>
       <div class="row chart-container" id="chartContainer">
         <div class="well well-lg">
           <canvas id="pollChart"></canvas>
@@ -15,9 +17,16 @@
       <div class="list-group" id="options">
 
       </div>
+      {% if username %}
+      <div id="addAnother">
+        <p>Not satisfied with the current choices? Add another!</p>
+        <button class="btn btn-default" id="addResponse"><i class="glyphicon glyphicon-plus"></i> Another Option</button>
+      </div>
+      {% endif %}
     </div>
   </div>
-
+  <!-- Go to www.addthis.com/dashboard to customize your tools -->
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-575f0ca95c84a315"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
   <script src="/public/js/palette.js"></script>

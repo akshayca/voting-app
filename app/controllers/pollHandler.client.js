@@ -7,7 +7,6 @@ $(document).ready(function() {
   var id = url.substring(url.lastIndexOf('/') + 1);
 
   $.get('/api/votes', function(voteList) {
-    console.log(voteList);
     if (voteList.indexOf(id) !== -1) {
       loadPollResults(id);
     } else {
@@ -19,25 +18,29 @@ $(document).ready(function() {
     $.get('/api/polls/' + id, populatePage);
 
     function populatePage(pollData) {
+      var creator = pollData.creator.username;
+      $('#addthis').css('display', 'none');
       $('#chartContainer').css("display", 'none');
       $('#response-intro').text("Select your response:")
       $('#question').text(pollData.question);
+      $('.creator').append('Created by: <a href="/users/' + creator + '">' + creator + '</a>');
       $.get('/api/polls/' + id + '/options', function(optionsData) {
-        console.log(optionsData);
         optionsData.forEach(function(option) {
           $('#options').append('<a class="list-group-item votable-option" href="/api/polls/' + pollData._id + '/options/' + option._id + '">' + option.text + '</a>');
         });
       });
-    }
-  }
+    };
+  };
 
   function loadPollResults(id) {
     $.get('/api/polls/' + id, populatePage);
 
     function populatePage(pollData) {
+      $('#addthis').css('display', 'block');
       $('#chartContainer').css("display", 'block');
       $('#response-intro').text("Votes per response")
       $('#question').text(pollData.question);
+      $('#addAnother').css("display", "none");
       $('#options').removeClass('list-group').append('<ul class="list-group"></ul>');
       var pollResults = [];
       var length;
@@ -56,11 +59,39 @@ $(document).ready(function() {
         })
       });
     }
-  }
+  };
+
+  $('#addResponse').click(function(e) {
+    e.preventDefault();
+    $('#addResponse').css('display', 'none');
+    $('#addAnother').append('<div class="well well-lg" id="addResponseForm"><div class="form-group option-group"><label>New option:</label><input type="text" class="form-control" id="response-option" placeholder="A possible response..."></div><p>Clicking Submit will add this option and register your vote for it.</p><button class="btn btn-primary" id="submit" type="submit">Submit & Vote</button><button class="btn btn-default" id="cancel">Cancel</button></div>');
+  });
+
+  $('#addAnother').on('click', '#submit', function(e) {
+    e.preventDefault();
+    var response = $('#response-option').val();
+    if (response.length > 0) {
+      var data = { "responses": [response] };
+      $.post('/api/polls/' + id, data, function(result) {
+        console.log(result);
+        if (result[0]._id) {
+          console.log(result[0]._id);
+          $.get('/api/polls/' + id + '/options/' + result[0]._id, function() {
+            location.reload();
+          })
+        }
+      });
+    }
+  })
+
 
   function displayChart(pollResults) {
     console.log("poll results: ", pollResults);
     var colors = palette('cb-Spectral', 11);
+    colors = colors.map(function(str) {
+      return "#" + str;
+    })
+    console.log(colors);
     var labels = [];
     var values = [];
 

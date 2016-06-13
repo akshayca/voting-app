@@ -4,7 +4,7 @@
 }
 
 .list-group a:hover {
-  background-color: #66c2a5;
+  background-color: #abdda4;
   color: #fff;
 }
 
@@ -13,7 +13,6 @@
 }
 
 .question {
-  margin-bottom: 30px;
   margin-top: 0px;
   color: #9e0142;
 }
@@ -41,7 +40,7 @@ h1 {
   font-size: 12em;
 }
 
-li.poll {
+.poll {
   display: block;
   position: relative;
 }
@@ -52,4 +51,27 @@ li.poll {
   right: 10px;
   top: 5px;
   line-height: 1.2;
+}
+
+.avatar {
+  height: 40px;
+  width: 40px;
+  border-radius: 20px;
+}
+
+#avatarLink {
+  padding: 5px;
+}
+
+#profileLink {
+  padding-left: 5px;
+}
+
+.creator {
+  color: #66c2a5;
+  margin-bottom: 30px;
+}
+
+#cancel {
+  margin-left: 15px;
 }

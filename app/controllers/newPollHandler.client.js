@@ -18,8 +18,14 @@ $(document).ready(function() {
     var responseOptions = [];
     $('.response-option').each(function(){
       var option = $(this).val();
-      responseOptions.push(option);
+      if (option) {
+        responseOptions.push(option);
+      }
     });
+    if (responseOptions.length < 2) {
+      alert("Please add at least 2 response options to your poll.");
+      return;
+    }
     var optionData = { responses: responseOptions }
     $.post('/api/polls', data, function(data) {
       var id = data._id;

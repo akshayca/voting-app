@@ -9,7 +9,8 @@ function pollHandler(db) {
 
   // Returns a single poll, per the /polls/:id param
   this.showPoll = function(req, res) {
-    Poll.findOne({_id: req.params.id})
+    Poll.findOne({_id: req.params.id, deletedAt: { "$exists": false } })
+      .populate('creator')
       .exec(function(err, result){
         if (err) { throw err; }
         res.json(result);
@@ -20,7 +21,8 @@ function pollHandler(db) {
   this.showOptions = function(req, res) {
     var pollId = req.params.id;
 
-    Option.find({ pollId: pollId }).select('_id text')
+    Option.find({ pollId: pollId, deletedAt: { "$exists": false } })
+      .select('_id text')
       .exec(function(err, result){
         if (err) {throw err};
         res.json(result);
@@ -39,7 +41,7 @@ function pollHandler(db) {
 
   // Returns all polls
   this.getList = function(req, res) {
-    Poll.find({}).select('_id question')
+    Poll.find({ deletedAt: { "$exists": false } }).select('_id question')
       .exec(function(err, result){
         if (err) {throw err};
         res.json(result);
@@ -55,7 +57,7 @@ function pollHandler(db) {
       if (i < terms.length - 1) regexString += '|';
     };
     var re = new RegExp(regexString, 'ig');
-    Poll.find({ question: re })
+    Poll.find({ question: re, deletedAt: { "$exists": false } })
       .exec(function(err, result) {
         if (err) {throw err};
         res.json(result);
@@ -102,12 +104,15 @@ function pollHandler(db) {
           var option = new Option(doc);
           option.save(function(err, result) {
             if (err) { throw err; }
-            response.push(doc);
+            Option.find({ pollId: pollId }).sort({_id:-1}).limit(1)
+            .exec(function(err, lastOption) {
+              if (err) { throw err; }
+              res.json(lastOption);
+            });
           });
           c++;
         }
       };
-      res.json(response);
     };
   };
 
@@ -148,12 +153,30 @@ function pollHandler(db) {
   // Return a list of polls created by a user
   this.getUserPolls = function(req, res) {
     var id = 'ObjectId("' + req.params.id + '")';
-    Poll.find({creator: id}).select('_id question')
+    Poll.find({creator: id, deletedAt: { "$exists": false } }).select('_id question')
       .exec(function(err, result){
         if (err) {throw err};
         res.json(result);
       });
   };
+
+  // Deletes (archives) a poll
+  this.deletePoll = function(req, res) {
+    var id = req.params.id;
+    Poll.findOne({ _id: id })
+    .populate('creator')
+    .exec(function(err, result) {
+      if (err) { throw err; }
+      if (result.creator.someID === req.user.someID) {
+        Poll.findOneAndUpdate({ _id: id }, { deletedAt: Date.now() }, { new: true }, function(err, result) {
+          if (err) { throw err };
+          res.json(result);
+        })
+      } else {
+        res.send("unauthorized");
+      }
+    })
+  }
 };
 
 module.exports = pollHandler;

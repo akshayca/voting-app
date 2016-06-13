@@ -9,6 +9,9 @@ var session = require('express-session');
 var cookieParser = require('cookie-parser');
 require('dotenv').load();
 
+function pollUrl(input) { return '/polls/' + input; }
+swig.setFilter('pollUrl', pollUrl);
+
 var app = express();
 
 mongoose.connect(process.env.MONGO_URI);

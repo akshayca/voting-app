@@ -51,6 +51,9 @@ router.route('/api/polls/:id')
   .get(PollHandler.showPoll)
   .post(PollHandler.addOptions);
 
+router.route('/api/polls/:id/delete')
+  .get(PollHandler.deletePoll);
+
 router.route('/api/polls/user/:id')
   .get(PollHandler.getUserPolls);
 
@@ -121,7 +124,7 @@ function currentUserLocals(req) {
   var locals;
 
   if (req.user) {
-    locals = { username: req.user.username, userId: req.user._id, profile: '/users/' + req.user.username };
+    locals = { username: req.user.username, userId: req.user._id, profile: '/users/' + req.user.username, avatar: req.user.avatar };
   } else {
     locals = {};
   }
