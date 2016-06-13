@@ -13,7 +13,7 @@ swig.setFilter('pollUrl', pollUrl);
 
 var app = express();
 
-mongoose.connect(process.env.MONGO_URI);
+mongoose.connect(process.env.MONGODB_URI);
 
 var db = mongoose.connection;
 
