@@ -2,6 +2,7 @@
 /* global $ */
 
 $(document).ready(function() {
+  $('#newPoll').addClass('active');
 
   $('#addResponse').click(function(e) {
     e.preventDefault();
@@ -13,8 +14,7 @@ $(document).ready(function() {
   $('#submit').click(function(e) {
     e.preventDefault();
     var question = $('#question').val();
-    var data = { question: question };
-    console.log(question);
+    var data = { question: question, creator: userId  };
     var responseOptions = [];
     $('.response-option').each(function(){
       var option = $(this).val();

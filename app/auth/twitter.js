@@ -10,13 +10,14 @@ passport.use(new TwitterStrategy({
     consumerSecret: config.twitter.consumerSecret,
     callbackURL: config.twitter.callbackURL
   },
-  function(accessToken, refreshToken, profile, done) {
+  function(token, tokenSecret, profile, done) {
 
     var searchQuery = {
-      name: profile.displayName
+      someID: profile.id
     };
 
     var updates = {
+      username: profile.username,
       name: profile.displayName,
       someID: profile.id
     };

@@ -13,10 +13,12 @@ passport.use(new GitHubStrategy({
   function(accessToken, refreshToken, profile, done) {
 
     var searchQuery = {
-      name: profile.displayName
+      someID: profile.id,
     };
 
     var updates = {
+      avatar: profile.avatar_url,
+      username: profile.username,
       name: profile.displayName,
       someID: profile.id
     };

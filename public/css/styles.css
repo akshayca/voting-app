@@ -27,3 +27,29 @@ h1 {
   margin-bottom: 0;
   margin-left: -30px;
 }
+
+.login {
+  display: inline-block;
+  position: relative;
+  margin-right: 15px;
+}
+
+.login:hover {
+  color: #ccc;
+}
+.login>i {
+  font-size: 12em;
+}
+
+li.poll {
+  display: block;
+  position: relative;
+}
+
+.deletePoll  {
+  display: block;
+  position: absolute;
+  right: 10px;
+  top: 5px;
+  line-height: 1.2;
+}

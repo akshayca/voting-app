@@ -73,7 +73,7 @@ function pollHandler(db) {
 
     var preparePoll = function(c, userReq) {
       var id = parseInt(c);
-      var doc = { _id: id, question: userReq.question };
+      var doc = { _id: id, question: userReq.question, creator: userReq.creator };
       var poll = new Poll(doc);
       poll.save(function(err, result) {
         if (err) { throw err; }
@@ -115,8 +115,10 @@ function pollHandler(db) {
   this.vote = function(req, res) {
     var pollId = req.params.pollId;
     var optionId = req.params.optionId;
-
-    var doc = { optionId: optionId, pollId: pollId };
+    if (req.user) {
+      var user = req.user._id;
+    }
+    var doc = { user: user, optionId: optionId, pollId: pollId};
     var vote = new Vote(doc);
     vote.save(function(err, result) {
       if (err) { throw err; }
@@ -134,12 +136,23 @@ function pollHandler(db) {
     });
   };
 
+  // Tally votes for all options on a poll
   this.totalPollVotes = function(req, res) {
     var id = req.params.id;
     Vote.count({ pollId: id }, function(err, count) {
       if (err) { throw err; }
       res.json({ count: count });
     });
+  };
+
+  // Return a list of polls created by a user
+  this.getUserPolls = function(req, res) {
+    var id = 'ObjectId("' + req.params.id + '")';
+    Poll.find({creator: id}).select('_id question')
+      .exec(function(err, result){
+        if (err) {throw err};
+        res.json(result);
+      });
   };
 };
 

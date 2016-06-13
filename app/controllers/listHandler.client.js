@@ -3,6 +3,8 @@
 
 $(document).ready(function(){
 
+  $('#allPolls').addClass('active');
+
   $.get('/api/polls', function(polls) {
     $('#polls').empty();
     polls.forEach(function(poll) {

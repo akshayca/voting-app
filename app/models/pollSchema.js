@@ -3,7 +3,8 @@ var Schema = mongoose.Schema;
 
 var pollSchema = new Schema({
   _id: Number,
-  question: String
+  question: String,
+  creator: { type: Schema.Types.ObjectId, ref: 'User' }
 },
 {timestamps: true});
 
