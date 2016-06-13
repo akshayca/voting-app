@@ -1,5 +1,5 @@
 {
-  "name": "Ubershibs Voting App",
+  "name": "ubershibs-voting-app",
   "version": "0.5.0",
   "description": "A voting app built as part of Free Code Camp's Back End curriculum.",
   "main": "server.js",
