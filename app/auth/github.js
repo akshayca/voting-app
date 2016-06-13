@@ -1,9 +1,7 @@
+'use strict';
 var passport = require('passport');
-require('dotenv').config();
 var GitHubStrategy = require('passport-github2').Strategy
-
 var User = require('../models/userSchema');
-var config = require('../_config');
 var init = require('./init');
 
 passport.use(new GitHubStrategy({

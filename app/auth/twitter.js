@@ -1,6 +1,5 @@
 var passport = require('passport');
 var TwitterStrategy = require('passport-twitter').Strategy;
-require('dotenv').config();
 var User = require('../models/userSchema');
 var init = require('./init');
 
