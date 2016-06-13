@@ -4,3 +4,6 @@ data/
 .c9/
 app/_config.js
 tmp/
+npm-debug.log
+.DS_Store
+/*.env
