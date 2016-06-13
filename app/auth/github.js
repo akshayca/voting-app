@@ -1,4 +1,5 @@
 var passport = require('passport');
+require('dotenv').config();
 var GitHubStrategy = require('passport-github2').Strategy
 
 var User = require('../models/userSchema');
@@ -6,9 +7,9 @@ var config = require('../_config');
 var init = require('./init');
 
 passport.use(new GitHubStrategy({
-  clientID: config.github.clientID,
-  clientSecret: config.github.clientSecret,
-  callbackURL: config.github.callbackURL
+  clientID: process.env.GITHUB_CLIENT_ID,
+  clientSecret: process.env.GITHUB_CLIENT_SECRET,
+  callbackURL: "https://voting-app-4-ubershibs.c9users.io:8080/auth/github/callback"
   },
   function(accessToken, refreshToken, profile, done) {
 

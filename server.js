@@ -7,7 +7,7 @@ var routes = require('./app/routes/index.js');
 var fs = require('fs');
 var session = require('express-session');
 var cookieParser = require('cookie-parser');
-require('dotenv').load();
+require('dotenv').config();
 
 function pollUrl(input) { return '/polls/' + input; }
 swig.setFilter('pollUrl', pollUrl);

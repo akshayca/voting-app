@@ -1,14 +1,13 @@
 var passport = require('passport');
 var TwitterStrategy = require('passport-twitter').Strategy;
-
+require('dotenv').config();
 var User = require('../models/userSchema');
-var config = require('../_config');
 var init = require('./init');
 
 passport.use(new TwitterStrategy({
-    consumerKey: config.twitter.consumerKey,
-    consumerSecret: config.twitter.consumerSecret,
-    callbackURL: config.twitter.callbackURL
+    consumerKey: process.env.TWITTER_CONSUMER_KEY,
+    consumerSecret: process.env.TWITTER_CONSUMER_SECRET,
+    callbackURL: "https://voting-app-4-ubershibs.c9users.io:8080/auth/twitter/callback"
   },
   function(token, tokenSecret, profile, done) {
     var searchQuery = {
