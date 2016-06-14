@@ -23,13 +23,11 @@ function deletePoll(e) {
     var targetPollQuestion = targetPoll.text();
     var go = confirm('Are you sure you want to delete the poll "' + targetPollQuestion + '"?');
     if (go === true) {
-      console.log(go);
       $.get('/api/polls/' + targetPollId + '/delete', function(result) {
         if (result === "unauthorized") {
           alert("You are not authorized to delete this poll");
         } else {
           targetPollParent.remove();
-          console.log(result);
         }
       });
     }

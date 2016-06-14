@@ -1,8 +1,6 @@
 'use strict';
 var mongoose = require('mongoose');
 var Poll = require('../models/pollSchema.js');
-var Option = require('../models/optionSchema');
-var Vote = require('../models/voteSchema');
 var User = require('../models/userSchema');
 
 function userHandler(db) {
@@ -22,20 +20,18 @@ function userHandler(db) {
   };
 
   this.getUserProfile = function(req, res) {
-    var profileUser = req.params.username;
-
-    User.findOne({ username: profileUser }).select('_id')
-    .exec(function(err, result){
-      if (err) {throw err};
-      if (result) {
-        Poll.find({ creator: result, deletedAt: { "$exists": false } }).select('_id question')
+    var profileId = req.params.socialId;
+    User.findOne({ someID: profileId }).select('_id username')
+    .exec(function(err, profileUser) {
+      if (profileUser) {
+        Poll.find({ creator: profileUser._id, deletedAt: { "$exists": false } }).select('_id question')
         .exec(function(err, result){
           if (err) {throw err};
           var profileUserPolls = result;
           if (req.user) {
-            res.render('user', { profileUser: profileUser, polls: profileUserPolls, username: req.user.username, userId: req.user._id });
+            res.render('user', { profileUser: profileUser.username, polls: profileUserPolls, username: req.user.username, userId: req.user._id });
           } else {
-            res.render('user', { profileUser: profileUser, polls: profileUserPolls});
+            res.render('user', { profileUser: profileUser.username, polls: profileUserPolls});
           }
         });
       }

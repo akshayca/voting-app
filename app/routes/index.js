@@ -39,7 +39,7 @@ router.route('/polls/:id')
     res.render('poll', locals);
   });
 
-router.route('/users/:username')
+router.route('/users/:socialId')
   .get(UserHandler.getUserProfile);
 
 // API routes
@@ -127,7 +127,7 @@ function currentUserLocals(req) {
   var locals;
 
   if (req.user) {
-    locals = { username: req.user.username, userId: req.user._id, profile: '/users/' + req.user.username, avatar: req.user.avatar };
+    locals = { username: req.user.username, userId: req.user._id, profile: '/users/' + req.user.someID, avatar: req.user.avatar };
   } else {
     locals = {};
   }

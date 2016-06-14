@@ -19,11 +19,12 @@ $(document).ready(function() {
 
     function populatePage(pollData) {
       var creator = pollData.creator.username;
+      var creatorSocialId = pollData.creator.someID;
       $('#addthis').css('display', 'none');
       $('#chartContainer').css("display", 'none');
       $('#response-intro').text("Select your response:")
       $('#question').text(pollData.question);
-      $('.creator').append('Created by: <a href="/users/' + creator + '">' + creator + '</a>');
+      $('.creator').append('Created by: <a href="/users/' + creatorSocialId + '">' + creator + '</a>');
       $.get('/api/polls/' + id + '/options', function(optionsData) {
         optionsData.forEach(function(option) {
           $('#options').append('<a class="list-group-item votable-option" href="/api/polls/' + pollData._id + '/options/' + option._id + '">' + option.text + '</a>');
