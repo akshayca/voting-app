@@ -75,3 +75,16 @@ h1 {
 #cancel {
   margin-left: 15px;
 }
+#addthis {
+  margin-left: auto;
+  margin-right: auto;
+  width: 180px;
+  display: block;
+  position: relative;
+}
+
+#addthisContainer {
+  display: block;
+  position: relative;
+  width: 100%;
+}
