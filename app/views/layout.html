@@ -15,7 +15,7 @@
     <div class="container-fluid">
       <!-- Brand and toggle get grouped for better mobile display -->
       <div class="navbar-header">
-        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false" tabindex="1">
           <span class="sr-only">Toggle navigation</span>
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
@@ -27,25 +27,24 @@
       <!-- Collect the nav links, forms, and other content for toggling -->
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <ul class="nav navbar-nav">
-          <li id="allPolls"><a href="/">All polls</a></li>
-          <li id="newPoll"><a href="/polls/new"><i class="glyphicon glyphicon-plus"></i> New Poll</a>
-          </li>
+          <li id="allPolls"><a href="/" tabindex="2">All polls</a></li>
+          <li id="newPoll"><a href="/polls/new" tabindex="3"><i class="glyphicon glyphicon-plus"></i> New Poll</a></li>
         </ul>
         <form class="navbar-form navbar-left" role="search">
           <div class="input-group">
-            <input type="text" class="form-control" placeholder="Search polls for..." id="searchTerms">
+            <input type="text" class="form-control" placeholder="Search polls for..." id="searchTerms" tabindex-"4">
             <span class="input-group-btn">
-              <button class="btn btn-default" type="submit" id="searchSubmit">Go!</button>
+              <button class="btn btn-default" type="submit" id="searchSubmit" tabindex="5">Go!</button>
             </span>
           </div><!-- /input-group -->
         </form>
         <ul class="nav navbar-nav navbar-right">
           {% if username %}
             <li><a href={{profile|json|safe}} id="avatarLink"><img class="avatar" src={{avatar}}></a></li>
-            <li><a href={{profile|json|safe}} id="profileLink">{{username}}</a></li>
-            <li><a href="/logout">Logout</a></li>
+            <li><a tabindex="8" href={{profile|json|safe}} id="profileLink">{{username}}</a></li>
+            <li><a tabindex="9" href="/logout">Logout</a></li>
           {% else %}
-            <li><a href="/login">Login</a></li>
+            <li><a href="/login" tabindex="6">Login</a></li>
           {% endif %}
         </ul>
       </div><!-- /.navbar-collapse -->

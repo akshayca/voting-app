@@ -86,34 +86,26 @@ function pollHandler(db) {
 
   // Add options to a poll
   this.addOptions = function(req, res) {
-    var userReq = req.body;
     var pollId = req.params.id;
 
     Option.count({}, function(err, count) {
       if(err) { throw err; }
-      prepareOptions(count, pollId, userReq, res);
-    });
-
-    var prepareOptions = function(c, pollId, userReq, res) {
-      var id = parseInt(c);
-      var optionsToAdd = userReq.responses.length;
-      var response = []
+      var id = parseInt(count);
+      var optionsToAdd = req.body.responses.length;
+      var savedOptions = [];
       for (var i = 0; i < optionsToAdd; i++) {
-        if (userReq.responses[i].length > 0) {
-          var doc = {_id: c, text: userReq.responses[i], pollId: pollId };
+        if (req.body.responses[i].length > 0) {
+          var doc = {_id: id, text: req.body.responses[i], pollId: pollId };
           var option = new Option(doc);
           option.save(function(err, result) {
             if (err) { throw err; }
-            Option.find({ pollId: pollId }).sort({_id:-1}).limit(1)
-            .exec(function(err, lastOption) {
-              if (err) { throw err; }
-              res.json(lastOption);
-            });
+            savedOptions.push(doc)
           });
-          c++;
+          id++;
         }
       };
-    };
+      res.json(savedOptions);
+    });
   };
 
   // Record a user's vote on a specific poll
@@ -123,7 +115,7 @@ function pollHandler(db) {
     if (req.user) {
       var user = req.user._id;
     }
-    var doc = { user: user, optionId: optionId, pollId: pollId};
+    var doc = { user: user, optionId: optionId, pollId: pollId };
     var vote = new Vote(doc);
     vote.save(function(err, result) {
       if (err) { throw err; }
@@ -171,12 +163,23 @@ function pollHandler(db) {
         Poll.findOneAndUpdate({ _id: id }, { deletedAt: Date.now() }, { new: true }, function(err, result) {
           if (err) { throw err };
           res.json(result);
-        })
+        });
       } else {
         res.send("unauthorized");
       }
-    })
+    });
   }
-};
+
+  // Returns the last-added option for a poll
+  this.lastOption = function(req, res) {
+    var id = req.params.pollId;
+    Option.find({ pollId: id }).sort({ _id: -1 }).limit(1)
+    .exec(function(err, result) {
+      console.log(result);
+      if (err) { throw err; }
+      res.json(result);
+    });
+  }
+}
 
 module.exports = pollHandler;

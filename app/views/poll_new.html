@@ -8,18 +8,18 @@
         <form id="newPoll">
           <div class="form-group" id="question-group">
             <label for="question"><h4>Question</h4></label>
-            <input type="text" class="form-control" id="question" placeholder="What would you like to ask?">
+            <input type="text" class="form-control" id="question" placeholder="What would you like to ask?" tabindex="10">
           </div>
           <div id="responses">
             <h4>Responses</h4>
             <div class="form-group option-group">
               <label>Option 1</label>
-              <input type="text" class="form-control response-option" placeholder="A possible response...">
+              <input type="text" class="form-control response-option" placeholder="A possible response..." tabindex="11">
             </div>
           </div>
           <div >
-            <button class="btn btn-default" id="addResponse"><i class="glyphicon glyphicon-plus"></i> Another Option</button>
-            <button class="btn btn-primary" id="submit">Submit Poll</button>
+            <button class="btn btn-default" role="button" id="addResponse"><i class="glyphicon glyphicon-plus"></i> Another Option</button>
+            <button class="btn btn-primary" role="submit" id="submit">Submit Poll</button>
           </div>
         </form>
       </div>

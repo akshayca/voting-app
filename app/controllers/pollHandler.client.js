@@ -65,7 +65,7 @@ $(document).ready(function() {
     e.preventDefault();
     $('#addResponse').css('display', 'none');
     $('#addAnother').append('<div class="well well-lg" id="addResponseForm"><div class="form-group option-group"><label>New option:</label><input type="text" class="form-control" id="response-option" placeholder="A possible response..."></div><p>Clicking Submit will add this option and register your vote for it.</p><button class="btn btn-primary" id="submit" type="submit">Submit & Vote</button><button class="btn btn-default" id="cancel">Cancel</button></div>');
-  });
+  })
 
   $('#addAnother').on('click', '#submit', function(e) {
     e.preventDefault();
@@ -73,13 +73,10 @@ $(document).ready(function() {
     if (response.length > 0) {
       var data = { "responses": [response] };
       $.post('/api/polls/' + id, data, function(result) {
-        console.log(result);
-        if (result[0]._id) {
-          console.log(result[0]._id);
-          $.get('/api/polls/' + id + '/options/' + result[0]._id, function() {
-            location.reload();
-          })
-        }
+        $.get('/api/polls/' + id + '/lastoption', function(lastOption) {
+          console.log(lastOption);
+          window.location.href = '/api/polls/' + id + '/options/' + lastOption[0]._id;
+        });
       });
     }
   })

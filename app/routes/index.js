@@ -63,6 +63,9 @@ router.route('/api/polls/:id/options')
 router.route('/api/polls/:pollId/options/:optionId')
   .get(PollHandler.vote);
 
+router.route('/api/polls/:pollId/lastoption')
+  .get(PollHandler.lastOption);
+
 router.route('/api/search')
   .get(PollHandler.getFilteredList);
 
