@@ -54,6 +54,6 @@ db.once('open', function() {
   app.use('/', routes);
 
   app.listen(process.env.PORT, function () {
-    console.log('Example app listening on port ' + process.env.PORT + '!');
+    console.log('VotingApp listening on port ' + process.env.PORT + '!');
   });
 });

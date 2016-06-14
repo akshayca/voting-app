@@ -88,3 +88,10 @@ h1 {
   position: relative;
   width: 100%;
 }
+
+#profileAvatar {
+  weight: 60px;
+  height: 60px;
+  border-radius: 30px;
+  margin-right: 10px;
+}

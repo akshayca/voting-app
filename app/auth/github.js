@@ -16,7 +16,7 @@ passport.use(new GitHubStrategy({
     };
 
     var updates = {
-      avatar: profile.avatar_url,
+      avatar: profile._json.avatar_url,
       username: profile.username,
       name: profile.displayName,
       someID: profile.id

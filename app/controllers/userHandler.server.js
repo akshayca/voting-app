@@ -21,7 +21,7 @@ function userHandler(db) {
 
   this.getUserProfile = function(req, res) {
     var profileId = req.params.socialId;
-    User.findOne({ someID: profileId }).select('_id username')
+    User.findOne({ someID: profileId }).select('_id username avatar')
     .exec(function(err, profileUser) {
       if (profileUser) {
         Poll.find({ creator: profileUser._id, deletedAt: { "$exists": false } }).select('_id question')
@@ -29,9 +29,9 @@ function userHandler(db) {
           if (err) {throw err};
           var profileUserPolls = result;
           if (req.user) {
-            res.render('user', { profileUser: profileUser.username, polls: profileUserPolls, username: req.user.username, userId: req.user._id });
+            res.render('user', { profileUser: profileUser.username, polls: profileUserPolls, profileAvatar: profileUser.avatar, username: req.user.username, userId: req.user._id });
           } else {
-            res.render('user', { profileUser: profileUser.username, polls: profileUserPolls});
+            res.render('user', { profileUser: profileUser.username, polls: profileUserPolls, profileAvatar: profileUser.avatar });
           }
         });
       }
