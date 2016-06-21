@@ -45,10 +45,18 @@ h1 {
   position: relative;
 }
 
-.deletePoll  {
+.deletePoll {
   display: block;
   position: absolute;
   right: 10px;
+  top: 5px;
+  line-height: 1.2;
+}
+
+.reviewResults {
+  display: block;
+  position: absolute;
+  right: 90px;
   top: 5px;
   line-height: 1.2;
 }

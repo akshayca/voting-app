@@ -10,19 +10,14 @@ var passportGithub = require('../auth/github');
 var passportTwitter = require('../auth/twitter');
 
 // Client routes
-router.route('/')
-  .get(function (req, res) {
-    var locals = currentUserLocals(req);
-    res.render('index', locals);
-});
+router.get('/', PollHandler.getList); // Converted to swig templating - PollHandler.getList renders 'index' with data///////
 
 router.get('/about', function(req, res) {
   var locals = currentUserLocals(req);
   res.render('about', locals);
 });
 
-router.route('/polls')
-  .get(function (req, res) {
+router.get('/polls', function (req, res) {
     var locals = currentUserLocals(req);
     res.render('search', locals);
 });
@@ -33,22 +28,18 @@ router.route('/polls/new')
     res.render('poll_new', locals);
 });
 
-router.route('/polls/:id')
-  .get(function(req, res) {
-    var locals = currentUserLocals(req);
-    res.render('poll', locals);
-  });
+router.get('/polls/:id', PollHandler.showPoll); // Converted to swig templating - PollHandler renders 'poll' with data
 
 router.route('/users/:socialId')
   .get(UserHandler.getUserProfile);
 
 // API routes
 router.route('/api/polls')
-  .get(PollHandler.getList)
+  .get(PollHandler.getList) // Duplicated / - deprecate when possible
   .post(PollHandler.addPoll);
 
 router.route('/api/polls/:id')
-  .get(PollHandler.showPoll)
+  .get(PollHandler.showPoll) // Duplicates /polls/:id - deprecate when possible
   .post(PollHandler.addOptions);
 
 router.route('/api/polls/:id/delete')
@@ -57,14 +48,14 @@ router.route('/api/polls/:id/delete')
 router.route('/api/polls/user/:id')
   .get(PollHandler.getUserPolls);
 
+router.route('/api/polls/:pollId/lastoption')
+  .get(PollHandler.lastOption);
+
 router.route('/api/polls/:id/options')
   .get(PollHandler.showOptions);
 
 router.route('/api/polls/:pollId/options/:optionId')
   .get(PollHandler.vote);
-
-router.route('/api/polls/:pollId/lastoption')
-  .get(PollHandler.lastOption);
 
 router.route('/api/search')
   .get(PollHandler.getFilteredList);
@@ -86,6 +77,10 @@ router.get('/login', function(req, res, next) {
   res.render('login');
 });
 
+router.get('/register', function(req, res, next) {
+  res.render('register');
+});
+
 router.get('/logout', function(req, res) {
   req.logout();
   res.redirect('/login');
@@ -94,22 +89,19 @@ router.get('/logout', function(req, res) {
 router.get('/auth/github', passportGithub.authenticate('github', { scope: [ 'user' ] }));
 
 router.get('/auth/github/callback',
-  passportGithub.authenticate('github'),
-  function(req, res) {
-    var redirectTo = req.session.redirectTo ? req.session.redirectTo : '/';
-    delete req.session.redirectTo;
-    res.redirect(redirectTo)
-  }
-);
+  passportGithub.authenticate('github', { successRedirect: '/', failuerRedirect: '/login' }));
 
 router.get('/auth/twitter', passportTwitter.authenticate('twitter'));
 
 router.get('/auth/twitter/callback',
-  passportTwitter.authenticate('twitter'),
-  function(req, res) {
-    var redirectTo = req.session.redirectTo ? req.session.redirectTo : '/';
-    delete req.session.redirectTo;
-    res.redirect(redirectTo)
+  passportTwitter.authenticate('twitter'), function(req, res) {
+    if (req.session) {
+      var redirectTo = req.session.redirectTo ? req.session.redirectTo : '/';
+      delete req.session.redirectTo;
+      res.redirect(redirectTo);
+    } else {
+      res.redirect('/');
+    }
   }
 );
 

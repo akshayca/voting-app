@@ -1,11 +1,26 @@
 'use strict';
+var async = require('async');
 var mongoose = require('mongoose');
 var Poll = require('../models/pollSchema.js');
 var Option = require('../models/optionSchema');
 var Vote = require('../models/voteSchema');
-var User = require('../models/userSchema');
 
 function pollHandler(db) {
+
+  // Returns all non-deleted polls
+  this.getList = function(req, res) {
+    var pollData = [];
+    Poll.find({ deletedAt: { "$exists": false } }).select('_id question')
+      .exec(function(err, result){
+        if (err) {throw err; }
+        if (req.user) {
+          res.render('index', { username: req.user.username, userId: req.user._id, profile: '/users/' + req.user.someID, avatar: req.user.avatar, polls: result });
+        } else {
+          console.log(pollData);
+          res.render('index', { polls: result });
+        }
+      });
+  };
 
   // Returns a single poll, per the /polls/:id param
   this.showPoll = function(req, res) {
@@ -13,7 +28,11 @@ function pollHandler(db) {
       .populate('creator')
       .exec(function(err, result){
         if (err) { throw err; }
-        res.json(result);
+        if (req.user) {
+          res.render('poll', { username: req.user.username, userId: req.user._id, profile: '/users/' + req.user.someID, avatar: req.user.avatar, pollId: result._id, question: result.question, creator: result.creator });
+        } else {
+          res.render('poll', { pollId: result._id, question: result.question, creator: result.creator });
+        }
       });
   };
 
@@ -37,15 +56,6 @@ function pollHandler(db) {
       req.session.votes = [];
       res.json(req.session.votes);
     }
-  };
-
-  // Returns all polls
-  this.getList = function(req, res) {
-    Poll.find({ deletedAt: { "$exists": false } }).select('_id question')
-      .exec(function(err, result){
-        if (err) {throw err};
-        res.json(result);
-      });
   };
 
   // Returns a filtered list of polls, based on the query string in the req

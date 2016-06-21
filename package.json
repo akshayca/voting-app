@@ -13,6 +13,7 @@
     "express": ">=4.0.0",
     "express-session": "^1.13.0",
     "mongoose": "^4.4.19",
+    "morgan": "^1.7.0",
     "passport": "^0.3.2",
     "passport-github2": "^0.1.10",
     "passport-twitter": "^1.0.4",
@@ -21,5 +22,12 @@
   "engines": {
     "node": "4.4.3",
     "npm": "2.15.1"
+  },
+  "devDependencies": {
+    "mocha": "^2.5.3",
+    "should": "^9.0.2"
+  },
+  "scripts": {
+    "test": "mocha"
   }
 }

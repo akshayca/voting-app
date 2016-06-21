@@ -1,17 +1,22 @@
 var express = require('express');
 var mongoose = require('mongoose');
-var passport = require('passport');
 var swig = require('swig');
+var passport = require('passport');
+var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var routes = require('./app/routes/index.js');
 var fs = require('fs');
 var session = require('express-session');
-var cookieParser = require('cookie-parser');
+var morgan = require('morgan');
 
 function pollUrl(input) { return '/polls/' + input; }
 swig.setFilter('pollUrl', pollUrl);
 
+function userUrl(input) { return '/users/' + input; }
+swig.setFilter('userUrl', userUrl);
+
 var app = express();
+require('./app/config/passport')(passport);
 
 mongoose.connect(process.env.MONGODB_URI);
 
@@ -30,6 +35,12 @@ db.once('open', function() {
   app.use('/public', express.static(process.cwd() + '/public'));
   app.use('/controllers', express.static(process.cwd() + '/app/controllers'));
   app.use(cookieParser());
+    app.use(bodyParser.urlencoded({
+    extended: true
+  }));
+  app.use(bodyParser.json());
+  app.use(morgan('dev'));
+
   var sess = {
     secret: 'keyboard cat',
     resave: true,
@@ -45,11 +56,6 @@ db.once('open', function() {
 
   app.use(passport.initialize());
   app.use(passport.session());
-
-  app.use(bodyParser.urlencoded({
-    extended: true
-  }));
-  app.use(bodyParser.json());
 
   app.use('/', routes);
 

@@ -12,7 +12,9 @@
         <h1>All Polls</h1>
       </header>
       <div class="list-group" id="polls">
-
+              {% for poll in polls %}
+          <a class="list-group-item" href={{ poll._id|pollUrl|json|safe }} id={{ poll._id}}><span class="badge">Loading...</span>{{ poll.question }}</a>
+        {% endfor %}
       </div>
     </div>
   </div>

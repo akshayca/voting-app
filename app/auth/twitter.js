@@ -9,28 +9,30 @@ passport.use(new TwitterStrategy({
     callbackURL: "https://ubershibs-voting-app.herokuapp.com/auth/twitter/callback"
   },
   function(token, tokenSecret, profile, done) {
-    var searchQuery = {
-      someID: profile.id
-    };
+    process.nextTick(function() {
+      var searchQuery = {
+        someID: profile.id
+      };
 
-    var updates = {
-      avatar: profile.photos[0].value,
-      username: profile.username,
-      name: profile.displayName,
-      someID: profile.id
-    };
+      var updates = {
+        avatar: profile.photos[0].value,
+        username: profile.username,
+        name: profile.displayName,
+        someID: profile.id
+      };
 
-    var options = {
-      upsert: true
-    };
+      var options = {
+        upsert: true
+      };
 
-    // Update the user if he/she exists, or add a new user
-    User.findOneAndUpdate(searchQuery, updates, options, function(err, user) {
-      if(err) {
-        return done(err);
-      } else {
-        return done(null, user);
-      }
+      // Update the user if he/she exists, or add a new user
+      User.findOneAndUpdate(searchQuery, updates, options, function(err, user) {
+        if(err) {
+          return done(err);
+        } else {
+          return done(null, user);
+        }
+      });
     });
   }
 ));

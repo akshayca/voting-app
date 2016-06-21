@@ -1,17 +1,15 @@
 'use strict';
-/* global $ */
+/* global $, profileUser */
 
 $(document).ready(function() {
 
   $.get('/api/currentuser/' + profileUser, function(result) {
-    console.log(result);
     if (result.isCurrentUser === "true") {
-      $("li.poll").append('<button class="deletePoll btn btn-danger" id="delete">Delete</button>');
+      $('li.poll').append('<button class="deletePoll btn btn-danger">Delete</button>');
     };
   });
 
-  $('li').on('click', 'button', deletePoll);
-
+  $('li').on('click', 'button.deletePoll', deletePoll);
 });
 
 function deletePoll(e) {

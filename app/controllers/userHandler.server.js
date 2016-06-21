@@ -23,10 +23,11 @@ function userHandler(db) {
     var profileId = req.params.socialId;
     User.findOne({ someID: profileId }).select('_id username avatar')
     .exec(function(err, profileUser) {
+      if (err) { throw err; }
       if (profileUser) {
         Poll.find({ creator: profileUser._id, deletedAt: { "$exists": false } }).select('_id question')
         .exec(function(err, result){
-          if (err) {throw err};
+          if (err) {throw err; }
           var profileUserPolls = result;
           if (req.user) {
             res.render('user', { profileUser: profileUser.username, polls: profileUserPolls, profileAvatar: profileUser.avatar, username: req.user.username, userId: req.user._id });
@@ -37,6 +38,6 @@ function userHandler(db) {
       }
     });
   };
-};
+}
 
 module.exports = userHandler;

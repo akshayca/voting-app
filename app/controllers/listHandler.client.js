@@ -2,18 +2,14 @@
 /* global $ */
 
 $(document).ready(function(){
-
+  var displayedPolls = [];
   $('#allPolls').addClass('active');
 
-  $.get('/api/polls', function(polls) {
-    $('#polls').empty();
-    polls.forEach(function(poll) {
-      $.get('/api/allvotes/' + poll._id, function(votes) {
-        var listing = '<a class="list-group-item" href="/polls/' + poll._id + '"><span class="badge">' + votes.count + '</span>' + poll.question + '</a>';
-        $('#polls').append(listing);
-      });
+  $('a.list-group-item').each(function() {
+    var id = this.id
+    $.get('/api/allvotes/' + id, function(votes) {
+      $('#' + id + ' span').text(votes.count);
     });
   });
-
 
 });

@@ -7,11 +7,14 @@
     <h4>{{profileUser}}'s polls</h4>
     <ul class="list-group" role="group" id="polls"></ul>
       {% for poll in polls %}
-      <li class="list-group-item poll"><a href={{poll._id|pollUrl|json|safe}} id={{poll._id|json|safe}}>{{poll.question}}</a></li>
+      <li class="list-group-item poll"><a href={{poll._id|pollUrl|json|safe}} id={{poll._id|json|safe}}>{{poll.question}}</a>
+      </li>
       {% endfor %}
     </ul>
   </div>
 </div>
+
+
 
 {% endblock %}
 {% block scripts %}

@@ -1,5 +1,5 @@
 'use strict';
-/* global $ */
+/* global $, Chart, palette, creator, userId */
 
 $(document).ready(function() {
 
@@ -9,64 +9,52 @@ $(document).ready(function() {
   $.get('/api/votes', function(voteList) {
     if (voteList.indexOf(id) !== -1) {
       loadPollResults(id);
+    } else if (creator === userId) {
+      loadPollResults(id);
     } else {
       loadPoll(id);
     }
   });
 
   function loadPoll(id) {
-    $.get('/api/polls/' + id, populatePage);
-
-    function populatePage(pollData) {
-      var creator = pollData.creator.username;
-      var creatorSocialId = pollData.creator.someID;
-      $('#addthis').css('display', 'none');
-      $('#chartContainer').css("display", 'none');
-      $('#response-intro').text("Select your response:")
-      $('#question').text(pollData.question);
-      $('.creator').append('Created by: <a href="/users/' + creatorSocialId + '">' + creator + '</a>');
-      $.get('/api/polls/' + id + '/options', function(optionsData) {
-        optionsData.forEach(function(option) {
-          $('#options').append('<a class="list-group-item votable-option" href="/api/polls/' + pollData._id + '/options/' + option._id + '">' + option.text + '</a>');
-        });
+    $('#addthis').css('display', 'none');
+    $('#chartContainer').css("display", 'none');
+    $('#response-intro').text("Select your response:");
+    $.get('/api/polls/' + id + '/options', function(optionsData) {
+      optionsData.forEach(function(option) {
+        $('#options').append('<a class="list-group-item votable-option" href="/api/polls/' + id + '/options/' + option._id + '">' + option.text + '</a>');
       });
-    };
-  };
+    });
+  }
 
   function loadPollResults(id) {
-    $.get('/api/polls/' + id, populatePage);
-
-    function populatePage(pollData) {
-      $('#addthis').css('display', 'block');
-      $('#chartContainer').css("display", 'block');
-      $('#response-intro').text("Votes per response")
-      $('#question').text(pollData.question);
-      $('#addAnother').css("display", "none");
-      $('#options').removeClass('list-group').append('<ul class="list-group"></ul>');
-      var pollResults = [];
-      var length;
-      $.get('/api/polls/' + id + '/options', function(optionsData) {
-        length = optionsData.length;
-        optionsData.forEach(function(option) {
-          $.get('/api/votes/' + option._id, function(data) {
-            var currOption = [option.text, data.count];
-            pollResults.push(currOption);
-            $('ul.list-group').append('<li class="list-group-item"><span class="badge">' + data.count + '</span>' + option.text + '</a>');
-            if(pollResults.length === length) {
-              console.log(pollResults);
-              displayChart(pollResults);
-            }
-          });
-        })
+    $('#addthis').css('display', 'block');
+    $('#chartContainer').css("display", 'block');
+    $('#response-intro').text("Votes per response")
+    $('#addAnother').css("display", "none");
+    $('#options').removeClass('list-group').append('<ul class="list-group"></ul>');
+    var pollResults = [];
+    var length;
+    $.get('/api/polls/' + id + '/options', function(optionsData) {
+      length = optionsData.length;
+      optionsData.forEach(function(option) {
+        $.get('/api/votes/' + option._id, function(data) {
+          var currOption = [option.text, data.count];
+          pollResults.push(currOption);
+          $('ul.list-group').append('<li class="list-group-item"><span class="badge">' + data.count + '</span>' + option.text + '</a>');
+          if(pollResults.length === length) {
+            displayChart(pollResults);
+          }
+        });
       });
-    }
-  };
+    });
+  }
 
   $('#addResponse').click(function(e) {
     e.preventDefault();
     $('#addResponse').css('display', 'none');
     $('#addAnother').append('<div class="well well-lg" id="addResponseForm"><div class="form-group option-group"><label>New option:</label><input type="text" class="form-control" id="response-option" placeholder="A possible response..."></div><p>Clicking Submit will add this option and register your vote for it.</p><button class="btn btn-primary" id="submit" type="submit">Submit & Vote</button><button class="btn btn-default" id="cancel">Cancel</button></div>');
-  })
+  });
 
   $('#addAnother').on('click', '#submit', function(e) {
     e.preventDefault();
@@ -75,7 +63,6 @@ $(document).ready(function() {
       var data = { "responses": [response] };
       $.post('/api/polls/' + id, data, function(result) {
         $.get('/api/polls/' + id + '/lastoption', function(lastOption) {
-          console.log(lastOption);
           window.location.href = '/api/polls/' + id + '/options/' + lastOption[0]._id;
         });
       });
@@ -84,16 +71,12 @@ $(document).ready(function() {
 
 
   function displayChart(pollResults) {
-    console.log("poll results: ", pollResults);
     var colors = palette('cb-Spectral', 11);
     colors = colors.map(function(str) {
       return "#" + str;
     })
-    console.log(colors);
     var labels = [];
     var values = [];
-
-    console.log(pollResults);
 
     function compare(a,b) {
       if (a[1] < b[1])  {
@@ -109,7 +92,7 @@ $(document).ready(function() {
     sortedResponses.forEach(function(response) {
       labels.push(response[0]);
       values.push(response[1]);
-    })
+    });
 
     if (labels.length > 10) {
       var legendLabels = labels.splice(0,10);
@@ -118,7 +101,8 @@ $(document).ready(function() {
       var legendValues = values.splice(0,10);
       var sumLowEnd = values.reduce(function(sum, cv) {
         return sum + cv;
-      })
+      });
+
       legendValues.push(sumLowEnd);
 
       labels = legendLabels;
@@ -148,7 +132,5 @@ $(document).ready(function() {
       options: options
     });
 
-
-    console.log(colors);
   }
 });
