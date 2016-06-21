@@ -10,8 +10,15 @@ You can play with my voting app on heroku here: https://ubershibs-voting-app.her
 
 I'd love any feedback you have! Send along an email to luke dot walker at gmail dot com.
 
+##Changes:
+- 0.2 June 21, 2016
+  - Added a "Register" button to clarify vs. single "Login" button
+  - Refactored All Polls and individual poll pages, and the user profile page to include more content on initial pageload, reducing the number of AJAX calls.
+  - Poll creators always see the results view of their polls (and as a result, can no longer vote on their own polls.)
+- 0.1 Initial launch
+
 ## To-do:
-- Move view logic entirely to Swig templates — I had the site half built before I discovered the engine, so I'm not yet taking full advantage of its functionality.
+- Move view logic entirely to Swig templates — completed for the index and poll views - and remove duplicative routes.
 - Add more authentication options/local.
 - Make things prettier.
 - Maybe change voting to be one vote per poll per user/IP address (for guests), rather than one vote per poll per session? I've left it like this to facilitate testing for now.
