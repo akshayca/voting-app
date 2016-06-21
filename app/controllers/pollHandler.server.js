@@ -1,5 +1,4 @@
 'use strict';
-var async = require('async');
 var mongoose = require('mongoose');
 var Poll = require('../models/pollSchema.js');
 var Option = require('../models/optionSchema');
