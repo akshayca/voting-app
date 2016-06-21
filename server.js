@@ -16,7 +16,6 @@ function userUrl(input) { return '/users/' + input; }
 swig.setFilter('userUrl', userUrl);
 
 var app = express();
-require('./app/config/passport')(passport);
 
 mongoose.connect(process.env.MONGODB_URI);
 

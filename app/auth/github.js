@@ -11,25 +11,22 @@ passport.use(new GitHubStrategy({
   callbackURL: process.env.GITHUB_CALLBACK_URL
   },
   function(accessToken, refreshToken, profile, done) {
-    process.nextTick(function() {
-      var searchQuery = {
-        someID: profile.id,
-      };
-
-      var updates = {
-        avatar: profile._json.avatar_url,
-        username: profile.username,
-        someID: profile.id
-      };
-
-      var options = {
-        upsert: true
-      };
-
-      // Update if the user exists, or add new
-      User.findOneAndUpdate(searchQuery, updates, options, function(err, user) {
+   process.nextTick(function() {
+      // Find use if he exists, otherwise add him
+      User.findOne({ someID: profile.id } , function(err, user) {
         if(err) {
           return done(err);
+        }
+        if (!user) {
+          user = new User({
+            avatar: profile._json.avatar_url,
+            username: profile.username,
+            someID: profile.id
+          });
+          user.save(function(err) {
+            if (err) console.log(err);
+            return done(err, user);
+          })
         } else {
           return done(null, user);
         }
@@ -37,7 +34,6 @@ passport.use(new GitHubStrategy({
     });
   }
 ));
-
 
 // serialize user into the session
 init();

@@ -10,25 +10,21 @@ passport.use(new TwitterStrategy({
   },
   function(token, tokenSecret, profile, done) {
     process.nextTick(function() {
-      var searchQuery = {
-        someID: profile.id
-      };
-
-      var updates = {
-        avatar: profile.photos[0].value,
-        username: profile.username,
-        name: profile.displayName,
-        someID: profile.id
-      };
-
-      var options = {
-        upsert: true
-      };
-
-      // Update the user if he/she exists, or add a new user
-      User.findOneAndUpdate(searchQuery, updates, options, function(err, user) {
+      // Find use if he exists, otherwise add him
+      User.findOne({ someID: profile.id }, function(err, user) {
         if(err) {
           return done(err);
+        }
+        if (!user) {
+          user = new User({
+            avatar: profile.photos[0].value,
+            username: profile.username,
+            someID: profile.id
+          });
+          user.save(function(err) {
+            if (err) console.log(err);
+            return done(err, user);
+          })
         } else {
           return done(null, user);
         }
