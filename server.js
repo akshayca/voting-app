@@ -8,6 +8,7 @@ var routes = require('./app/routes/index.js');
 var fs = require('fs');
 var session = require('express-session');
 var morgan = require('morgan');
+var config = require('./app/_config');
 
 function pollUrl(input) { return '/polls/' + input; }
 swig.setFilter('pollUrl', pollUrl);
@@ -17,7 +18,7 @@ swig.setFilter('userUrl', userUrl);
 
 var app = express();
 
-mongoose.connect(process.env.MONGODB_URI);
+mongoose.connect(config.mongoURI[app.get('env')]);
 
 var db = mongoose.connection;
 
@@ -41,7 +42,7 @@ db.once('open', function() {
   app.use(morgan('dev'));
 
   var sess = {
-    secret: 'keyboard cat',
+    secret: 'keyboard kitty',
     resave: true,
     saveUninitialized: true,
     cookie: {}

@@ -12,6 +12,7 @@ I'd love any feedback you have! Send along an email to luke dot walker at gmail 
 
 ##Changes:
 - 0.2 June 21, 2016
+  - Fixed the issue where users were getting 'unauthorized' on their first login
   - Added a "Register" button to clarify vs. single "Login" button
   - Refactored All Polls and individual poll pages, and the user profile page to include more content on initial pageload, reducing the number of AJAX calls.
   - Poll creators always see the results view of their polls (and as a result, can no longer vote on their own polls.)
